@@ -192,26 +192,10 @@ layout: compress
           });
         }
 
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        sidebar?.addEventListener('touchstart', function (e) {
-          touchStartX = e.changedTouches[0].screenX;
-        });
-
-        sidebar?.addEventListener('touchend', function (e) {
-          touchEndX = e.changedTouches[0].screenX;
-          handleSwipe();
-        });
-
-        function handleSwipe() {
-          const swipeDistance = touchStartX - touchEndX;
-          const minSwipeDistance = 50;
-
-          if (swipeDistance > minSwipeDistance) {
-            hideSidebar();
-          }
-        }
+      if (isTouchDevice) {
+            sidebar.style.transform = '';
+            sidebar.style.webkitTransform = '';
+      }
       });</script>
   </body>
 </html>

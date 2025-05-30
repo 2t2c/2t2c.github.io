@@ -85,17 +85,14 @@ layout: compress
 
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        // Function to hide sidebar
         function hideSidebar() {
           const body = document.body;
           const sidebarDisplayAttr = 'sidebar-display';
 
-          // Remove the sidebar-display attribute to hide sidebar
           if (body.hasAttribute(sidebarDisplayAttr)) {
             body.removeAttribute(sidebarDisplayAttr);
           }
 
-          // Alternative method: directly manipulate the sidebar element
           const sidebar = document.getElementById('sidebar');
           if (sidebar) {
             sidebar.style.transform = 'translateX(-100%)';
@@ -103,14 +100,12 @@ layout: compress
           }
         }
 
-        // Function to show sidebar
         function showSidebar() {
           const body = document.body;
           const sidebarDisplayAttr = 'sidebar-display';
 
           body.setAttribute(sidebarDisplayAttr, '');
 
-          // Reset transform
           const sidebar = document.getElementById('sidebar');
           if (sidebar) {
             sidebar.style.transform = '';
@@ -118,51 +113,34 @@ layout: compress
           }
         }
 
-        // Function to check if clicked link is a posts link
         function isPostsLink(href) {
           if (!href) return false;
 
-          // Check if the href contains '/posts/' or matches posts pattern
           return (
             href.includes('/posts/') ||
             href.match(/\/posts\/?$/)
           );
         }
 
-        // Add click event listeners to ALL navigation links in sidebar
         const sidebarNavLinks = document.querySelectorAll('#sidebar .nav-link');
 
-        console.log('Found navigation links:', sidebarNavLinks.length); // Debug line
-
         sidebarNavLinks.forEach((link, index) => {
-          console.log('Link', index, ':', link.getAttribute('href')); // Debug line
 
           link.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
-
-            console.log('Clicked link:', href); // Debug line
-
-            // If it's a posts link, hide the sidebar
             if (isPostsLink(href)) {
-              console.log('This is a posts link - hiding sidebar'); // Debug line
-
-              // Small delay to allow navigation to start
               setTimeout(hideSidebar, 50);
-            } else {
-              console.log('This is not a posts link'); // Debug line
             }
           });
         });
 
-        // Also check current page and hide sidebar if we're on a posts page
         const currentPath = window.location.pathname;
-        console.log('Current path:', currentPath); // Debug line
+        console.log('Current path:', currentPath);
 
         if (isPostsLink(currentPath)) {
           hideSidebar();
         }
 
-        // Listen for page changes (if you're using any SPA-like navigation)
         window.addEventListener('popstate', function () {
           const newPath = window.location.pathname;
           if (isPostsLink(newPath)) {
@@ -172,7 +150,6 @@ layout: compress
           }
         });
 
-        // Optional: Add keyboard shortcut to toggle sidebar (ESC key)
         document.addEventListener('keydown', function (e) {
           if (e.key === 'Escape') {
             const body = document.body;
@@ -186,9 +163,8 @@ layout: compress
           }
         });
 
-        // Optional: Hover on left edge to show sidebar when hidden
         let hoverTimer;
-        const hoverZone = 100; // pixels from left edge
+        const hoverZone = 100;
         const body = document.body;
         const sidebar = document.getElementById('sidebar');
         const sidebarDisplayAttr = 'sidebar-display';
@@ -201,12 +177,10 @@ layout: compress
             showSidebar();
           }
         });
-        // Keep sidebar visible while hovering over it
         sidebar?.addEventListener('mouseenter', function () {
           clearTimeout(hoverTimer);
         });
 
-        // Hide sidebar shortly after mouse leaves it
         sidebar?.addEventListener('mouseleave', function () {
           if (isPostsLink(currentPath)) {
             hoverTimer = setTimeout(() => {
@@ -214,7 +188,28 @@ layout: compress
             }, 100);
           }
         });
-      });
-    </script>
+
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        sidebar?.addEventListener('touchstart', function (e) {
+          touchStartX = e.changedTouches[0].screenX;
+        });
+
+        sidebar?.addEventListener('touchend', function (e) {
+          touchEndX = e.changedTouches[0].screenX;
+          handleSwipe();
+        });
+
+        function handleSwipe() {
+          const swipeDistance = touchStartX - touchEndX;
+          const minSwipeDistance = 50;
+
+          if (swipeDistance > minSwipeDistance) {
+            hideSidebar();
+          }
+        }
+      });</script>
   </body>
 </html>

@@ -3,14 +3,14 @@
 @use '../abstracts/mixins' as mx;
 @use '../abstracts/placeholders';
 
-body {
-  margin-left: -25px;
-  transition: margin-left 0.3s ease;
+// body {
+//   margin-left: -25px;
+//   transition: margin-left 0.3s ease;
 
-  // &[sidebar-display] {
-  //   margin-left: 1px;
-  // }
-}
+//   // &[sidebar-display] {
+//   //   margin-left: 1px;
+//   // }
+// }
 
 %-btn-post-nav {
   width: 50%;

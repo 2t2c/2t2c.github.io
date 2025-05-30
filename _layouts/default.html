@@ -85,6 +85,7 @@ layout: compress
 
     <script>
       document.addEventListener('DOMContentLoaded', function () {
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         function hideSidebar() {
           const body = document.body;
           const sidebarDisplayAttr = 'sidebar-display';
@@ -162,33 +163,34 @@ layout: compress
             }
           }
         });
+        
+        if (!isTouchDevice) {
+          let hoverTimer;
+          const hoverZone = 100;
+          const body = document.body;
+          const sidebar = document.getElementById('sidebar');
+          const sidebarDisplayAttr = 'sidebar-display';
 
-        let hoverTimer;
-        const hoverZone = 100;
-        const body = document.body;
-        const sidebar = document.getElementById('sidebar');
-        const sidebarDisplayAttr = 'sidebar-display';
+          document.addEventListener('mousemove', function (e) {
+            const sidebarHidden = !body.hasAttribute(sidebarDisplayAttr);
 
-        document.addEventListener('mousemove', function (e) {
-          const sidebarHidden = !body.hasAttribute(sidebarDisplayAttr);
-
-          if (isPostsLink(currentPath) && sidebarHidden && e.clientX <= hoverZone) {
+            if (isPostsLink(currentPath) && sidebarHidden && e.clientX <= hoverZone) {
+              clearTimeout(hoverTimer);
+              showSidebar();
+            }
+          });
+          sidebar?.addEventListener('mouseenter', function () {
             clearTimeout(hoverTimer);
-            showSidebar();
-          }
-        });
-        sidebar?.addEventListener('mouseenter', function () {
-          clearTimeout(hoverTimer);
-        });
+          });
 
-        sidebar?.addEventListener('mouseleave', function () {
-          if (isPostsLink(currentPath)) {
-            hoverTimer = setTimeout(() => {
-              hideSidebar();
-            }, 100);
-          }
-        });
-
+          sidebar?.addEventListener('mouseleave', function () {
+            if (isPostsLink(currentPath)) {
+              hoverTimer = setTimeout(() => {
+                hideSidebar();
+              }, 100);
+            }
+          });
+        }
 
         let touchStartX = 0;
         let touchEndX = 0;

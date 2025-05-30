@@ -9,78 +9,243 @@ layout: compress
 {% include lang.html %}
 
 {% if site.theme_mode %}
-  {% capture prefer_mode %}data-mode="{{ site.theme_mode }}"{% endcapture %}
+{% capture prefer_mode %}data-mode="{{ site.theme_mode }}"{% endcapture %}
 {% endif %}
 
 <!-- `site.alt_lang` can specify a language different from the UI -->
 <html lang="{{ page.lang | default: site.alt_lang | default: site.lang }}" {{ prefer_mode }}>
-  {% include head.html %}
+{% include head.html %}
 
-  <body>
-    {% include sidebar.html lang=lang %}
+<body>
+  {% include sidebar.html lang=lang %}
 
-    <div id="main-wrapper" class="d-flex justify-content-center">
-      <div class="container d-flex flex-column px-xxl-5">
-        {% include topbar.html lang=lang %}
+  <div id="main-wrapper" class="d-flex justify-content-center">
+    <div class="container d-flex flex-column px-xxl-5">
+      {% include topbar.html lang=lang %}
 
-        <div class="row flex-grow-1">
-          <main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4">
-            {% if layout.refactor or layout.layout == 'default' %}
-              {% include refactor-content.html content=content lang=lang %}
-            {% else %}
-              {{ content }}
-            {% endif %}
-          </main>
+      <div class="row flex-grow-1">
+        <main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4">
+          {% if layout.refactor or layout.layout == 'default' %}
+          {% include refactor-content.html content=content lang=lang %}
+          {% else %}
+          {{ content }}
+          {% endif %}
+        </main>
 
-          <!-- panel -->
-          <aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted">
-            <div class="access">
-              {% include_cached update-list.html lang=lang %}
-              {% include_cached trending-tags.html lang=lang %}
-            </div>
-
-            {% for _include in layout.panel_includes %}
-              {% assign _include_path = _include | append: '.html' %}
-              {% include {{ _include_path }} lang=lang %}
-            {% endfor %}
-          </aside>
-        </div>
-
-        <div class="row">
-          <!-- tail -->
-          <div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4">
-            {% for _include in layout.tail_includes %}
-              {% assign _include_path = _include | append: '.html' %}
-              {% include {{ _include_path }} lang=lang %}
-            {% endfor %}
-
-            {% include_cached footer.html lang=lang %}
+        <!-- panel -->
+        <aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted">
+          <div class="access">
+            {% include_cached update-list.html lang=lang %}
+            {% include_cached trending-tags.html lang=lang %}
           </div>
-        </div>
 
-        {% include_cached search-results.html lang=lang %}
+          {% for _include in layout.panel_includes %}
+          {% assign _include_path = _include | append: '.html' %}
+          {% include {{ _include_path }} lang=lang %}
+          {% endfor %}
+        </aside>
       </div>
 
-      <aside aria-label="Scroll to Top">
-        <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow">
-          <i class="fas fa-angle-up"></i>
-        </button>
-      </aside>
+      <div class="row">
+        <!-- tail -->
+        <div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4">
+          {% for _include in layout.tail_includes %}
+          {% assign _include_path = _include | append: '.html' %}
+          {% include {{ _include_path }} lang=lang %}
+          {% endfor %}
+
+          {% include_cached footer.html lang=lang %}
+        </div>
+      </div>
+
+      {% include_cached search-results.html lang=lang %}
     </div>
 
-    <div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div>
+    <aside aria-label="Scroll to Top">
+      <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow">
+        <i class="fas fa-angle-up"></i>
+      </button>
+    </aside>
+  </div>
 
-    {% if site.pwa.enabled %}
-      {% include_cached notification.html lang=lang %}
-    {% endif %}
+  <div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div>
 
-    <!-- Embedded scripts -->
+  {% if site.pwa.enabled %}
+  {% include_cached notification.html lang=lang %}
+  {% endif %}
 
-    {% for _include in layout.script_includes %}
-      {% assign _include_path = _include | append: '.html' %}
-      {% include {{ _include_path }} %}
-    {% endfor %}
+  <!-- Embedded scripts -->
 
-    {% include_cached search-loader.html lang=lang %}
-  </body>
+  {% for _include in layout.script_includes %}
+  {% assign _include_path = _include | append: '.html' %}
+  {% include {{ _include_path }} %}
+  {% endfor %}
+
+  {% include_cached search-loader.html lang=lang %}
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('Sidebar hide script loaded'); // Debug line - you can remove this later
+
+      // Function to hide sidebar
+      function hideSidebar() {
+        const body = document.body;
+        const sidebarDisplayAttr = 'sidebar-display';
+
+        console.log('Hiding sidebar'); // Debug line - you can remove this later
+
+        // Remove the sidebar-display attribute to hide sidebar
+        if (body.hasAttribute(sidebarDisplayAttr)) {
+          body.removeAttribute(sidebarDisplayAttr);
+        }
+
+        // Alternative method: directly manipulate the sidebar element
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+          sidebar.style.transform = 'translateX(-100%)';
+          sidebar.style.webkitTransform = 'translateX(-100%)';
+        }
+      }
+
+      // Function to show sidebar
+      function showSidebar() {
+        const body = document.body;
+        const sidebarDisplayAttr = 'sidebar-display';
+
+        body.setAttribute(sidebarDisplayAttr, '');
+
+        // Reset transform
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+          sidebar.style.transform = '';
+          sidebar.style.webkitTransform = '';
+        }
+      }
+
+      // Function to check if clicked link is a posts link
+      function isPostsLink(href) {
+        if (!href) return false;
+
+        // Check if the href contains '/posts/' or matches posts pattern
+        return (
+          href.includes('/posts/') ||
+          href.match(/\/posts\/?$/)
+        );
+      }
+
+      // Add click event listeners to ALL navigation links in sidebar
+      const sidebarNavLinks = document.querySelectorAll('#sidebar .nav-link');
+
+      console.log('Found navigation links:', sidebarNavLinks.length); // Debug line
+
+      sidebarNavLinks.forEach((link, index) => {
+        console.log('Link', index, ':', link.getAttribute('href')); // Debug line
+
+        link.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+
+          console.log('Clicked link:', href); // Debug line
+
+          // If it's a posts link, hide the sidebar
+          if (isPostsLink(href)) {
+            console.log('This is a posts link - hiding sidebar'); // Debug line
+
+            // Small delay to allow navigation to start
+            setTimeout(hideSidebar, 50);
+          } else {
+            console.log('This is not a posts link'); // Debug line
+          }
+        });
+      });
+
+      // Also check current page and hide sidebar if we're on a posts page
+      const currentPath = window.location.pathname;
+      console.log('Current path:', currentPath); // Debug line
+
+      if (isPostsLink(currentPath)) {
+        console.log('Current page is a posts page - hiding sidebar'); // Debug line
+        hideSidebar();
+      }
+
+      // Listen for page changes (if you're using any SPA-like navigation)
+      window.addEventListener('popstate', function () {
+        const newPath = window.location.pathname;
+        if (isPostsLink(newPath)) {
+          hideSidebar();
+        } else {
+          showSidebar();
+        }
+      });
+
+      // Optional: Add keyboard shortcut to toggle sidebar (ESC key)
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          const body = document.body;
+          const sidebarDisplayAttr = 'sidebar-display';
+
+          if (body.hasAttribute(sidebarDisplayAttr)) {
+            hideSidebar();
+          } else {
+            showSidebar();
+          }
+        }
+      });
+
+      // Optional: Hover on left edge to show sidebar when hidden
+      let hoverTimer;
+      const hoverZone = 100; // pixels from left edge
+      const body = document.body;
+      const sidebar = document.getElementById('sidebar');
+      const sidebarDisplayAttr = 'sidebar-display';
+
+      document.addEventListener('mousemove', function (e) {
+        const sidebarHidden = !body.hasAttribute(sidebarDisplayAttr);
+
+        if (isPostsLink(currentPath) && sidebarHidden && e.clientX <= hoverZone) {
+          clearTimeout(hoverTimer);
+          showSidebar();
+        }
+      });
+      // Keep sidebar visible while hovering over it
+      sidebar?.addEventListener('mouseenter', function () {
+        clearTimeout(hoverTimer);
+      });
+
+      // Hide sidebar shortly after mouse leaves it
+      sidebar?.addEventListener('mouseleave', function () {
+        if (isPostsLink(currentPath)) {
+          hoverTimer = setTimeout(() => {
+            hideSidebar();
+          }, 100);
+        }
+      });
+
+
+      // Optional: Add swipe gesture support for mobile
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      sidebar?.addEventListener('touchstart', function (e) {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      sidebar?.addEventListener('touchend', function (e) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        const swipeDistance = touchStartX - touchEndX;
+        const minSwipeDistance = 50;
+
+        if (swipeDistance > minSwipeDistance) {
+          // Swiped left - hide sidebar
+          hideSidebar();
+        }
+      }
+
+    });
+  </script>
+</body>
+
 </html>

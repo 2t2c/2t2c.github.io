@@ -85,14 +85,10 @@ layout: compress
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      console.log('Sidebar hide script loaded'); // Debug line - you can remove this later
-
       // Function to hide sidebar
       function hideSidebar() {
         const body = document.body;
         const sidebarDisplayAttr = 'sidebar-display';
-
-        console.log('Hiding sidebar'); // Debug line - you can remove this later
 
         // Remove the sidebar-display attribute to hide sidebar
         if (body.hasAttribute(sidebarDisplayAttr)) {
@@ -163,7 +159,6 @@ layout: compress
       console.log('Current path:', currentPath); // Debug line
 
       if (isPostsLink(currentPath)) {
-        console.log('Current page is a posts page - hiding sidebar'); // Debug line
         hideSidebar();
       }
 

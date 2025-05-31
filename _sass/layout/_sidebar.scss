@@ -31,7 +31,7 @@ $sidebar-display: 'sidebar-display'; /* the attribute for sidebar display */
   // Add smooth transition for transform property
   // transition: transform 0.3s ease-in-out;
   // -webkit-transition: -webkit-transform 0.3s ease-in-out;
-  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   @include bp.lt(bp.get(lg)) {
     @include mx.slide;
@@ -269,6 +269,38 @@ body[data-page-type="posts"] #sidebar {
   transform: translateX(-#{v.$sidebar-width}) !important;
   -webkit-transform: translateX(-#{v.$sidebar-width}) !important;
 }
+
+#sidebar-arrow {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  
+  background-color: transparent;   /* remove background */
+  border: none;                    /* remove border */
+  
+  padding: 1rem 0.6rem;            /* increase vertical padding */
+  border-radius: 0 6px 6px 0;
+  
+  z-index: 1050;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0.5;
+}
+
+#sidebar-arrow i {
+  color: var(--sidebar-btn-color);
+  font-size: 1.5rem;       /* keep overall size */
+  line-height: 1;
+  transform: scaleY(1.25);  /* stretch vertically */
+  display: inline-block;   /* ensure transform works properly */
+}
+
+#sidebar-arrow:hover {
+  opacity: 1;
+}
+
+
 
 // Also add transition to main wrapper if it moves
 #main-wrapper {

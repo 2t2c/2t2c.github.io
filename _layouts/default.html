@@ -14,6 +14,21 @@ layout: compress
 
 <!-- `site.alt_lang` can specify a language different from the UI -->
 <html lang="{{ page.lang | default: site.alt_lang | default: site.lang }}" {{ prefer_mode }}>
+  <script>
+    (function () {
+      const path = window.location.pathname;
+      const isPosts = path.includes('/posts/') || path.match(/\/posts\/?$/);
+      if (isPosts) {
+        document.documentElement.classList.add('pre-hide-sidebar');
+      }
+    })();
+  </script>
+  <style>
+  .pre-hide-sidebar #sidebar {
+    transform: translateX(-100%) !important;
+    -webkit-transform: translateX(-100%) !important;
+  }
+</style>
   {% include head.html %}
 
   <body>
@@ -90,6 +105,11 @@ layout: compress
       document.addEventListener('DOMContentLoaded', function () {
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         const sidebarArrow = document.getElementById('sidebar-arrow');
+        const sidebarDisplayAttr = 'sidebar-display';
+        const body = document.body;
+        const sidebar = document.getElementById('sidebar');
+        const currentPath = window.location.pathname;
+        const sidebarNavLinks = document.querySelectorAll('#sidebar .nav-link');
         
         function toggleArrow(show) {
           if (!sidebarArrow) return;
@@ -97,14 +117,9 @@ layout: compress
         }
 
         function hideSidebar() {
-          const body = document.body;
-          const sidebarDisplayAttr = 'sidebar-display';
-
           if (body.hasAttribute(sidebarDisplayAttr)) {
             body.removeAttribute(sidebarDisplayAttr);
           }
-
-          const sidebar = document.getElementById('sidebar');
           if (sidebar) {
             sidebar.style.transform = 'translateX(-100%)';
             sidebar.style.webkitTransform = 'translateX(-100%)';
@@ -115,12 +130,7 @@ layout: compress
         }
 
         function showSidebar() {
-          const body = document.body;
-          const sidebarDisplayAttr = 'sidebar-display';
-
           body.setAttribute(sidebarDisplayAttr, '');
-
-          const sidebar = document.getElementById('sidebar');
           if (sidebar) {
             sidebar.style.transform = '';
             sidebar.style.webkitTransform = '';
@@ -132,14 +142,13 @@ layout: compress
 
         function isPostsLink(href) {
           if (!href) return false;
-
-          return (
-            href.includes('/posts/') ||
-            href.match(/\/posts\/?$/)
-          );
+          return href.includes('/posts/') || href.match(/\/posts\/?$/);
         }
 
-        const sidebarNavLinks = document.querySelectorAll('#sidebar .nav-link');
+        if (isPostsLink(currentPath)) {
+          body.setAttribute(sidebarDisplayAttr, '');
+          hideSidebar();
+        }
 
         sidebarNavLinks.forEach((link, index) => {
 
@@ -151,14 +160,7 @@ layout: compress
           });
         });
 
-        const currentPath = window.location.pathname;
-        console.log('Current path:', currentPath);
-
-        if (isPostsLink(currentPath)) {
-          hideSidebar();
-        }
-
-        window.addEventListener('popstate', function () {
+        window.addEventListener('popstate', () => {
           const newPath = window.location.pathname;
           if (isPostsLink(newPath)) {
             hideSidebar();
@@ -169,9 +171,6 @@ layout: compress
 
         document.addEventListener('keydown', function (e) {
           if (e.key === 'Escape') {
-            const body = document.body;
-            const sidebarDisplayAttr = 'sidebar-display';
-
             if (body.hasAttribute(sidebarDisplayAttr)) {
               hideSidebar();
             } else {
@@ -183,10 +182,6 @@ layout: compress
         if (!isTouchDevice) {
           let hoverTimer;
           const hoverZone = 100;
-          const body = document.body;
-          const sidebar = document.getElementById('sidebar');
-          const sidebarDisplayAttr = 'sidebar-display';
-
           document.addEventListener('mousemove', function (e) {
             const sidebarHidden = !body.hasAttribute(sidebarDisplayAttr);
 
@@ -222,6 +217,8 @@ layout: compress
         hideSidebarWithArrow();
       }
 
-      });</script>
+      document.documentElement.classList.remove('pre-hide-sidebar');
+      });
+      </script>
   </body>
 </html>

@@ -225,3 +225,27 @@ jekyll-archives:
   permalinks:
     tag: /tags/:name/
     category: /categories/:name/
+
+plugins:
+  - jekyll-scholar
+
+scholar:
+  style: ./_bibliography/csl/ieee.csl
+  locale: en
+
+  sort_by: none
+  order: ascending
+  cited_only: true
+
+  source: ./_bibliography
+  bibliography: references.bib
+  bibliography_template: "{{reference}}"
+
+  replace_strings: true
+  join_strings:    true
+
+  details_dir:    bibliography
+  details_layout: bibtex.html
+  details_link:   Details
+
+  query: "@*"

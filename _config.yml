@@ -228,6 +228,7 @@ jekyll-archives:
 
 plugins:
   - jekyll-scholar
+  - jekyll-redirect-from
 
 scholar:
   style: ./_bibliography/csl/ieee.csl

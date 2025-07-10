@@ -1,6 +1,6 @@
 ---
 title: "Re-DreamerV3 🤖"
-date: 2025-06-20
+date: 2025-05-31
 categories: [RL]
 tags: [rssm, vae]
 pin: false

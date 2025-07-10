@@ -14,22 +14,24 @@ timezone:
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Udit Thakur # the main title
+title: Udit's Blogs # the main title
 
-tagline: Data Scientist # it will display as the subtitle
+tagline: A blog dedicated to AI/ML, Mathematics, and Computer Science research topics. # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
-  A minimal, responsive and feature-rich Jekyll theme for technical writing.
+  A personal tech blog and portfolio sharing insights on machine learning, mathematics, and computer science.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
 url: "https://2t2c.github.io"
 
+author: Udit Thakur
+
 github:
   username: 2t2c # change to your GitHub username
 
-twitter:
-  username: twitter_username # change to your Twitter username
+# twitter:
+#   username: twitter_username # change to your Twitter username
 
 social:
   # Change to your full name.
@@ -98,7 +100,7 @@ theme_mode: # [light | dark]
 cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: https://media.licdn.com/dms/image/v2/D5603AQHbTvf_vCO_Ww/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1714121509694?e=1752105600&v=beta&t=VVuWbLOQSPaA6VLzjFu7jVZ4ZtWv20E-hYZUHqY1bJY
+avatar: assets/img/DP.jpg
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.

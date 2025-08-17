@@ -11,8 +11,6 @@
 
   .card-wrapper {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 1.25rem;
-
     &:hover {
       text-decoration: none;
       transform: translateY(-5px);
@@ -20,7 +18,7 @@
     }
 
     &:last-child {
-      margin-bottom: 0;
+      margin-bottom: 1.25rem;
     }
   }
 
@@ -186,5 +184,6 @@
 }
 
 .col-md-6.d-flex {
-  padding-bottom: 0.25rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem !important;
 }

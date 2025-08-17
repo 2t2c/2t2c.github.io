@@ -11,12 +11,16 @@
 
   .card-wrapper {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 0.25rem;
+    margin-bottom: 1.25rem;
 
     &:hover {
       text-decoration: none;
       transform: translateY(-5px);
       box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    &:last-child {
+      margin-bottom: 0;
     }
   }
 
@@ -179,4 +183,8 @@
       display: none;
     }
   }
+}
+
+.col-md-6.d-flex {
+  padding-bottom: 0.25rem;
 }

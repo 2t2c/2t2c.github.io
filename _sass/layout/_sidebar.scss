@@ -110,9 +110,6 @@ $sidebar-display: 'sidebar-display'; /* the attribute for sidebar display */
   }
 
   .site-title {
-    @extend %clickable-transition;
-    @extend %sidebar-link-hover;
-
     font-family: inherit;
     font-weight: 900;
     font-size: 1.75rem;
@@ -122,6 +119,13 @@ $sidebar-display: 'sidebar-display'; /* the attribute for sidebar display */
     margin-bottom: 0.5rem;
     width: fit-content;
     color: var(--site-title-color);
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    transition: transform 0.3s ease, color 0.3s ease;
+    &:hover {
+      transform: scale(1.05);
+    }
   }
 
   .site-subtitle {

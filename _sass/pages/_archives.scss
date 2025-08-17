@@ -138,3 +138,14 @@
     }
   }
 } /* #archives */
+
+#archives a::before {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 3; // keep dot clickable
+}
+
+#archives a:hover::before {
+  transform: scale(1.3);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+

@@ -10,17 +10,20 @@
   }
 
   .card-wrapper {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     &:hover {
       text-decoration: none;
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
     }
-
     &:not(:last-child) {
       margin-bottom: 1.25rem;
     }
+    margin-bottom: 0.25rem;
   }
 
   .card {
-    border: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     background: none;
 
     %img-radius {
@@ -36,7 +39,15 @@
 
       img {
         @extend %img-radius;
+        width: auto;        // let width adjust automatically
+        max-width: 75%;     // scale down relative to container
+        height: auto;       // maintain aspect ratio
+        display: block;
+        margin-left: auto;
+        margin-right: 20px;
+        background: transparent !important;
       }
+      background: transparent !important;
     }
 
     .card-body {
